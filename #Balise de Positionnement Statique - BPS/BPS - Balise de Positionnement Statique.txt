@@ -1,2 +1,0 @@
-La Balise de Positionnement Statique (BPS) est un point fixe servant de référence pour le calcul de position. Placée sur le terrain (base, bâtiment, zone neutre), elle émet un signal stable permettant au système de réaliser un positionnement de type A‑GPS improvisé.
-Elle améliore la précision globale, stabilise les mesures et permet au Détecteur de trianguler plus efficacement les balises mobiles. Une ou plusieurs BPS peuvent être déployées selon la taille du terrain.

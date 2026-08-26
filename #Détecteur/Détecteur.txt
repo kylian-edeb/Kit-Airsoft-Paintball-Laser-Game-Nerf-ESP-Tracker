@@ -1,2 +1,0 @@
-Le Détecteur est l’unité principale du système. Installé sur une arme (monture Picatinny) ou utilisé en module portable, il reçoit en temps réel les signaux émis par les balises mobiles. Il affiche la position estimée des joueurs équipés, permettant une lecture tactique immédiate du terrain.
-C’est l’outil du joueur “opérateur” ou du chef d’équipe, offrant une vision stratégique de la zone de jeu, des déplacements ennemis et de la position des alliés encore actifs.
