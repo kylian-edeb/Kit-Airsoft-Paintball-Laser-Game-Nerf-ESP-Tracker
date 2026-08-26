@@ -1,0 +1,99 @@
+==================================================================
+ KIT DE DETECTION TACTIQUE (Airsoft / Paintball / Laser Game / Nerf)
+ LISTE DU MATERIEL NECESSAIRE
+ Basé sur le dépôt "Kit-Airsoft-Paintball-Laser-Game-Nerf-ESP-Tracker"
+ (Détecteur / BPS / BEM) - Généré le 26/08/2026
+==================================================================
+
+Ce fichier liste, module par module, tout le matériel électronique,
+mécanique et consommable nécessaire à la fabrication d'un kit complet.
+Les quantités "par joueur" ou "par point" sont à multiplier selon le
+nombre de participants et la taille du terrain.
+
+------------------------------------------------------------------
+1) BEM - BALISE A EMISSION MOBILE (1 par joueur)
+------------------------------------------------------------------
+Electronique :
+- 1x ESP32 (ou ESP32-S3) carte de développement, format compact
+- 1x Module LoRa 433 MHz (ex. SX1278 / RFM95)
+- 1x Antenne LoRa 433 MHz (fouet ou spirale, adaptée au boîtier)
+- 1x Module de charge/protection batterie LiPo (type TP4056 avec
+  protection surcharge/décharge)
+- 1x Batterie LiPo 3.7V, 1000-2000 mAh
+- 1x LED bicolore ou RGB (indication d'état : actif / neutralisé)
+- 1x Bouton poussoir dédié "élimination / réactivation"
+- 1x Interrupteur marche/arrêt général
+- Câblage souple + connecteurs JST 2 broches
+- (optionnel) module vibreur pour confirmation tactile
+
+Mécanique :
+- 1x Boîtier compact étanche IP54 minimum (résistant aux chocs/billes)
+- 1x Clip ceinture, brassard velcro ou passant MOLLE
+- Visserie M2/M3, entretoises plastique
+- Mousse de calage intérieure
+
+------------------------------------------------------------------
+2) BPS - BALISE DE POSITIONNEMENT STATIQUE (1 à plusieurs par terrain)
+------------------------------------------------------------------
+Electronique :
+- 1x ESP32 (carte de développement standard)
+- 1x Module LoRa 433 MHz + antenne (portée renforcée si possible)
+- 1x Module GNSS/GPS u-blox (NEO-6M ou NEO-M8N) + antenne active,
+  pour l'auto-calibration de la position du point fixe
+- 1x Batterie externe / powerbank haute capacité (5000-20000 mAh)
+  OU alimentation secteur 5V (adaptateur + câble)
+- (optionnel) panneau solaire 5V + régulateur de charge pour
+  déploiement longue durée
+
+Mécanique :
+- 1x Boîtier étanche extérieur IP65
+- 1x Support de fixation : trépied léger, piquet de sol, ou
+  fixation murale/poteau
+- Sangles ou colliers de serrage pour fixation rapide
+- Système anti-arrachement (cadenas, câble antivol) si zone
+  accessible aux joueurs
+
+------------------------------------------------------------------
+3) DETECTEUR PORTABLE (1 par opérateur / chef d'équipe)
+------------------------------------------------------------------
+Electronique :
+- 1x ESP32-S3 (puissance suffisante pour affichage + calculs)
+- 1x Ecran OLED ou TFT (lisibilité en extérieur, faible conso)
+- 1x Module LoRa 433 MHz + antenne
+- 1x Module GNSS/GPS u-blox + antenne active (position du porteur)
+- 1x Module de charge/protection batterie LiPo (TP4056 ou équiv.)
+- 1x Batterie LiPo 3.7V, 1500-3000 mAh (autonomie renforcée)
+- 2-3x Boutons de navigation (menu / zoom / mode équipe)
+- 1x Buzzer et/ou moteur vibreur (alerte contact proche)
+- 1x Interrupteur marche/arrêt
+
+Mécanique :
+- 1x Boîtier robuste (impression 3D ou boîtier ABS renforcé)
+- 1x Adaptateur / rail Picatinny pour montage sur réplique
+- Visserie, entretoises, joint d'étanchéité
+- Dragonne ou poignée si usage en module portable à main
+
+------------------------------------------------------------------
+4) MATERIEL COMMUN / OUTILLAGE DE FABRICATION
+------------------------------------------------------------------
+- Fer à souder + étain + pompe à dessouder
+- Multimètre
+- Câbles Dupont (M-M, M-F, F-F) pour prototypage
+- Plaque(s) de prototypage / breadboard pour les tests
+- Gaine thermorétractable
+- Colle thermofusible / colle époxy (fixation composants boîtier)
+- Imprimante 3D (si boîtiers imprimés) + filament (PETG conseillé
+  pour tenue extérieure/résistance chocs)
+- Chargeur LiPo multi-voies (recharge des balises entre parties)
+- Autocollants ou peinture de marquage équipe (rouge / bleu / autre)
+- Câble USB-C (programmation/flash des ESP32)
+- PC avec Arduino IDE / PlatformIO pour le flashage des firmwares
+
+------------------------------------------------------------------
+NOTE
+------------------------------------------------------------------
+Cette liste est établie à partir de la description fonctionnelle du
+projet (README + fiches BEM/BPS/Détecteur). Le dépôt ne contenant pas
+encore de nomenclature (BOM) ni de schéma électronique figés, les
+références précises de composants (modèles exacts, fournisseurs)
+restent à valider selon les choix définitifs de conception.
