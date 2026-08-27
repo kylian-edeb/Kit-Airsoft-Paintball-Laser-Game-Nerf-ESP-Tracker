@@ -1,3 +1,16 @@
 {
-    "idf.currentSetup": "c:\\Espressif\\frameworks\\esp-idf-v5.3.3"
+  "idf.currentSetup": "c:\\Espressif\\frameworks\\esp-idf-v5.3.3",
+  "idf.openOcdConfigs": [
+    "interface/ftdi/esp32_devkitj_v1.cfg",
+    "target/esp32s3.cfg"
+],
+  "idf.customExtraVars": {},
+  "clangd.path": "C:\\Users\\kylia\\.espressif\\tools\\esp-clang\\16.0.1-fe4f10a809\\esp-clang\\bin\\clangd.exe",
+  "clangd.arguments": [
+    "--background-index",
+    "--query-driver=**",
+    "--compile-commands-dir=c:\\Users\\kylia\\Downloads\\GitDeskTopV2\\Kit-Airsoft-Paintball-Laser-Game-Nerf-ESP-Tracker\\build"
+],
+"idf.monitorPort": "COM5",
+"idf.portWin": "COM5"
 }
