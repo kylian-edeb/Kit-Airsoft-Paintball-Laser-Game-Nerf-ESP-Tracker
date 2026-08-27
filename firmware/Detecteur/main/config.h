@@ -61,7 +61,6 @@ constexpr uint8_t  MAX_TRACKED_BEACONS   = 16;
 constexpr uint32_t BEACON_TIMEOUT_MS     = 8000;   // balise considérée perdue
 constexpr uint32_t BEACON_STALE_MS       = 3000;   // affichage "signal faible"
 constexpr uint32_t DISPLAY_REFRESH_MS    = 150;
-constexpr uint32_t GPS_LOG_INTERVAL_MS   = 2000;
 
 constexpr uint32_t ENCODER_LONGPRESS_MS  = 600;
 constexpr uint32_t CALIBRATION_HOLD_MS   = 3000;

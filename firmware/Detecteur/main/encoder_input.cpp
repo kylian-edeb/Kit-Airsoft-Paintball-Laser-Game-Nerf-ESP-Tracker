@@ -137,11 +137,3 @@ bool EncoderInput::consumeVeryLongPress()
   }
   return false;
 }
-
-uint32_t EncoderInput::buttonHeldDurationMs() const
-{
-  if (!_buttonHeld) {
-    return 0;
-  }
-  return millis() - _pressStartMillis;
-}

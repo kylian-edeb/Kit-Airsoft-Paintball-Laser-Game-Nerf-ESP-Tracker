@@ -28,7 +28,6 @@ public:
   bool consumeVeryLongPress(); // durée >= CALIBRATION_HOLD_MS
 
   bool isButtonHeld() const { return _buttonHeld; }
-  uint32_t buttonHeldDurationMs() const;
 
 private:
   int _pinA = -1;
