@@ -1,0 +1,13 @@
+# Lance setup()/loop() automatiquement (fournis par le composant arduino-esp32).
+CONFIG_AUTOSTART_ARDUINO=y
+
+# La pile par défaut de la tâche loop() Arduino est trop juste pour le
+# rendu TFT (Adafruit_GFX) combiné aux calculs flottants du compas et
+# de la géométrie GPS.
+CONFIG_ARDUINO_LOOP_STACK_SIZE=16384
+
+# ESP32-S3 N16R8 : 16 Mo de flash, 8 Mo de PSRAM Octale.
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_MODE_OCT=y
+CONFIG_SPIRAM_SPEED_80M=y

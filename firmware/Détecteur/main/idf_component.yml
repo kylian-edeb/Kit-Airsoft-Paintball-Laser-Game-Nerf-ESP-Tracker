@@ -1,0 +1,13 @@
+# Dépendances récupérées depuis le registre de composants ESP-IDF
+# (https://components.espressif.com). Vérifier les noms/versions
+# exacts sur le registre avant la première compilation : ce sont les
+# coordonnées connues au moment de l'écriture, mais elles évoluent.
+#
+# Si Adafruit-GFX-Library / Adafruit-ILI9341 ne sont pas disponibles
+# sous ces noms, la solution de repli est de les vendre manuellement
+# (copier les sources de la librairie Arduino) dans un composant local
+# sous components/, avec son propre CMakeLists.txt (idf_component_register).
+dependencies:
+  espressif/arduino-esp32: ">=3.0.0"
+  adafruit/Adafruit-GFX-Library: "*"
+  adafruit/Adafruit-ILI9341: "*"
