@@ -12,5 +12,6 @@
     "--compile-commands-dir=c:\\Users\\kylia\\Downloads\\GitDeskTopV2\\Kit-Airsoft-Paintball-Laser-Game-Nerf-ESP-Tracker\\build"
 ],
 "idf.monitorPort": "COM5",
-"idf.portWin": "COM5"
+"idf.portWin": "COM5",
+"cmake.sourceDirectory": "C:/Users/kylia/Git/GitHub_Desktop/Kit-Airsoft-Paintball-Laser-Game-Nerf-ESP-Tracker/firmware/Detecteur/main"
 }

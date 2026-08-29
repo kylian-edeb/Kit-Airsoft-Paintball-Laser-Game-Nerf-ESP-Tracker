@@ -8,6 +8,6 @@
 # (copier les sources de la librairie Arduino) dans un composant local
 # sous components/, avec son propre CMakeLists.txt (idf_component_register).
 dependencies:
-  espressif/arduino-esp32: ">=3.0.0"
-  adafruit/Adafruit-GFX-Library: "*"
-  adafruit/Adafruit-ILI9341: "*"
+  idf:
+    version: ">=5.3,<5.4"
+  espressif/arduino-esp32: "==3.1.3"

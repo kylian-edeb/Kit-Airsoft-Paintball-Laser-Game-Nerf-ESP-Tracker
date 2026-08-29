@@ -8,5 +8,12 @@ idf_component_register(
         "encoder_input.cpp"
         "tracker.cpp"
         "display.cpp"
+
     INCLUDE_DIRS "."
+
+    REQUIRES
+        espressif__arduino-esp32
+        Adafruit_BusIO
+        Adafruit_GFX_Library
+        Adafruit_ILI9341
 )
