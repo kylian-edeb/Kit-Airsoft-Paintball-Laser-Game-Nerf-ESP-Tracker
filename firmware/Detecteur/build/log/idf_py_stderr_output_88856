@@ -1,0 +1,30 @@
+ESP Insights Project commit: 2e6d921-dirty
+ESP RainMaker Project commit: 2e6d921-dirty
+CMake Warning in managed_components/espressif__libsodium/CMakeLists.txt:
+  The object file directory
+
+    C:/Users/kylia/Git/GitHub_Desktop/Kit-Airsoft-Paintball-Laser-Game-Nerf-ESP-Tracker/firmware/Detecteur/build/esp-idf/espressif__libsodium/CMakeFiles/__idf_espressif__libsodium.dir/./
+
+  has 182 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    8327a5b18cbcd0ed3af5296ed67eddf4/pwhash_scryptsalsa208sha256_nosse.c.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+
+CMake Warning in managed_components/espressif__arduino-esp32/CMakeLists.txt:
+  The object file directory
+
+    C:/Users/kylia/Git/GitHub_Desktop/Kit-Airsoft-Paintball-Laser-Game-Nerf-ESP-Tracker/firmware/Detecteur/build/esp-idf/espressif__arduino-esp32/CMakeFiles/__idf_espressif__arduino-esp32.dir/./
+
+  has 190 characters.  The maximum full path to an object file is 250
+  characters (see CMAKE_OBJECT_PATH_MAX).  Object file
+
+    libraries/USB/src/keyboardLayout/KeyboardLayout_sv_SE.cpp.obj
+
+  cannot be safely placed under this directory.  The build may not work
+  correctly.
+
+

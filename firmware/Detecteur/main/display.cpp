@@ -230,7 +230,7 @@ void Display::showCompassScreen(const CompassScreenData &data)
 {
   char screenLabel[16];
   if (data.headingValid) {
-    snprintf(screenLabel, sizeof(screenLabel), "CIBLE H:%03d", lroundf(data.ownHeadingDeg));
+    snprintf(screenLabel, sizeof(screenLabel), "CIBLE H:%03ld", lroundf(data.ownHeadingDeg));
   } else {
     snprintf(screenLabel, sizeof(screenLabel), "CIBLE H:---");
   }
@@ -364,11 +364,11 @@ void Display::showBeaconList(const TrackedBeacon *beacons[], int count, int high
   drawTopBar(gpsHasFix, satellites, batteryPercent, count, "LISTE");
 
   constexpr int LIST_Y = TOP_H;
-  constexpr int LIST_H = SCREEN_H - TOP_H;
+  constexpr int LIST_AREA_H = SCREEN_H - TOP_H;
   constexpr int ROW_H = 30;
-  constexpr int VISIBLE_ROWS = LIST_H / ROW_H;
+  constexpr int VISIBLE_ROWS = LIST_AREA_H / ROW_H;
 
-  _tft.fillRect(0, LIST_Y, SCREEN_W, LIST_H, COLOR_BACKGROUND);
+  _tft.fillRect(0, LIST_Y, SCREEN_W, LIST_AREA_H, COLOR_BACKGROUND);
 
   if (count == 0) {
     _tft.setTextSize(2);

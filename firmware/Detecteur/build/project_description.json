@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "detecteur",
-    "project_version":    "c897eb1-dirty",
+    "project_version":    "2e6d921-dirty",
     "project_path":       "C:/Users/kylia/Git/GitHub_Desktop/Kit-Airsoft-Paintball-Laser-Game-Nerf-ESP-Tracker/firmware/Detecteur",
     "idf_path":           "C:/Espressif/frameworks/esp-idf-v5.3.3",
     "build_dir":          "C:/Users/kylia/Git/GitHub_Desktop/Kit-Airsoft-Paintball-Laser-Game-Nerf-ESP-Tracker/firmware/Detecteur/build",

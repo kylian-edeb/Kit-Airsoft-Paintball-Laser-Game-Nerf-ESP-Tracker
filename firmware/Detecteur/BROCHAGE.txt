@@ -1,0 +1,94 @@
+============================================================
+ DETECTEUR - Brochage ESP32-S3 (N16R8, PSRAM Octal)
+ Source : firmware/Detecteur/main/config.h
+============================================================
+
+ATTENTION : les GPIO33 a GPIO37 sont reserves au bus PSRAM/flash
+interne de la puce N16R8. Ne jamais les utiliser pour du cablage
+externe.
+
+------------------------------------------------------------
+ ECRAN TFT ILI9341 (bus SPI) - affichage principal (boussole,
+ liste des balises, infos GPS/batterie)
+------------------------------------------------------------
+GPIO12  -> SCLK  (horloge SPI)
+GPIO11  -> MOSI  (donnees vers l'ecran)
+GPIO13  -> MISO  (donnees depuis l'ecran)
+GPIO10  -> CS    (chip select ecran)
+GPIO9   -> DC    (data/command)
+GPIO8   -> RST   (reset ecran)
+GPIO7   -> LED   (retro-eclairage)
+
+------------------------------------------------------------
+ ENCODEUR ROTATIF - navigation dans les menus/liste de balises
+------------------------------------------------------------
+GPIO4  -> A   (voie A du quadrature)
+GPIO5  -> B   (voie B du quadrature)
+GPIO6  -> SW  (bouton poussoir de l'encodeur)
+
+------------------------------------------------------------
+ IMU MPU9265/9250 (bus I2C) - boussole / cap du porteur
+------------------------------------------------------------
+GPIO17 -> SDA
+GPIO18 -> SCL
+Vitesse bus : 400 kHz
+
+------------------------------------------------------------
+ RADIO LoRa-02 / SX1278 - reception des trames des balises
+ (partage le meme bus SPI que l'ecran : SCLK=12, MOSI=11, MISO=13)
+------------------------------------------------------------
+GPIO21 -> CS    (chip select radio)
+GPIO14 -> RST   (reset module LoRa)
+GPIO38 -> DIO0  (interruption reception/transmission)
+Frequence : 433 MHz (bande EU)
+Spreading factor : 9 (6-12)
+Bande passante : index 7 (125 kHz)
+Coding rate : 4/5
+Sync word : 0x34 (reseau prive)
+
+------------------------------------------------------------
+ GPS u-blox NEO-6M (UART1) - position du detecteur
+------------------------------------------------------------
+GPIO39 -> RX (relie au TX du module GPS)
+GPIO40 -> TX (relie au RX du module GPS)
+Debit : 9600 bauds
+Remarque : GPIO39/40 sont aussi les broches JTAG par defaut
+(MTCK/MTDO) de l'ESP32-S3. Sans consequence si le JTAG materiel
+n'est pas cable sur la carte.
+
+------------------------------------------------------------
+ BUZZER PASSIF - alertes sonores
+------------------------------------------------------------
+GPIO2 -> signal PWM du buzzer
+
+------------------------------------------------------------
+ BATTERIE - mesure du niveau de charge
+------------------------------------------------------------
+GPIO1 -> entree ADC1 (via pont diviseur de tension)
+Ratio du pont diviseur : 2.0 (a ajuster selon le montage reel)
+Tension vide : 3.3 V
+Tension pleine : 4.2 V
+
+============================================================
+ RESUME - role de chaque peripherique dans le programme
+============================================================
+- Ecran ILI9341     : affiche l'ecran boussole (cap, cible la
+                       plus proche), la liste des balises suivies,
+                       la barre superieure (GPS, batterie, nb de
+                       balises actives).
+- Encodeur rotatif   : navigue entre les ecrans / la liste des
+                       balises, selectionne une balise, declenche
+                       la calibration de la boussole (appui long).
+- IMU MPU9265/9250   : donne le cap magnetique du porteur, utilise
+                       pour orienter la fleche/l'ecran boussole
+                       vers la balise ciblee.
+- Radio SX1278 (LoRa): recoit les trames envoyees par les balises
+                       (position/etat), alimente le suivi (tracker)
+                       des balises actives.
+- GPS NEO-6M         : fournit la position et l'heure du detecteur,
+                       necessaire pour calculer le relevement vers
+                       chaque balise.
+- Buzzer             : emet des alertes sonores (ex: nouvelle
+                       balise detectee, balise perdue).
+- Pont diviseur/ADC  : mesure le niveau de batterie affiche dans la
+                       barre superieure.
