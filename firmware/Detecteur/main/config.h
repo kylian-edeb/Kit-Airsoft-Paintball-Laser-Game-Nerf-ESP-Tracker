@@ -65,3 +65,19 @@ constexpr uint32_t DISPLAY_REFRESH_MS    = 150;
 constexpr uint32_t ENCODER_LONGPRESS_MS  = 600;
 constexpr uint32_t CALIBRATION_HOLD_MS   = 3000;
 constexpr uint32_t CALIBRATION_DURATION_MS = 15000;
+
+// ============================================================
+// Mode debug / banc d'essai
+// ============================================================
+// À 1 : injecte 3 balises fictives en mouvement dans le tracker,
+// pour tester l'écran, l'encodeur et le buzzer du Détecteur seul,
+// sans aucune balise BEM réelle à proximité. Le cap et la position
+// simulés ne remplacent le GPS/la boussole réels que s'ils sont
+// absents ou sans fix : du vrai matériel connecté reprend toujours
+// la main automatiquement. Un bandeau orange s'affiche en
+// permanence à l'écran tant que ce mode est actif.
+//
+// NE JAMAIS laisser à 1 pour une utilisation en jeu réel : les
+// balises affichées seraient fictives. Remettre à 0 avant de
+// reflasher pour le terrain.
+#define DETECTOR_DEBUG_SIMULATION 0

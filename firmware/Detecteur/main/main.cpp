@@ -64,6 +64,58 @@ constexpr uint32_t GEOMETRY_UPDATE_INTERVAL_MS = 500;
 constexpr uint32_t EXPIRY_CHECK_INTERVAL_MS = 1000;
 constexpr uint32_t BATTERY_READ_INTERVAL_MS = 5000;
 
+#if DETECTOR_DEBUG_SIMULATION
+// Position fixe arbitraire servant de "position du Détecteur" tant que le
+// GPS réel n'a pas de fix : uniquement pour pouvoir calculer un relèvement
+// et une distance vers les balises simulées.
+constexpr GeoPoint DEBUG_OWN_POSITION{ 48.8566, 2.3522 };
+constexpr uint32_t DEBUG_BEACON_UPDATE_MS = 500;
+uint32_t lastDebugInjectMillis = 0;
+
+void injectFakeBeacon(uint8_t id, uint8_t team, BeaconStatus status,
+                       float bearingDeg, float distanceM)
+{
+  // Déplace la balise fictive à `distanceM` mètres de DEBUG_OWN_POSITION,
+  // dans la direction `bearingDeg` (approximation plane, largement
+  // suffisante à l'échelle d'un terrain de jeu).
+  const double bearingRad = degToRad(bearingDeg);
+  const double dLat = (distanceM * cos(bearingRad)) / 111320.0;
+  const double dLon = (distanceM * sin(bearingRad)) /
+    (111320.0 * cos(degToRad(DEBUG_OWN_POSITION.latitudeDeg)));
+
+  BeaconPacket packet{};
+  packet.protocolVersion = PROTOCOL_VERSION;
+  packet.beaconId = id;
+  packet.teamId = team;
+  packet.type = static_cast<uint8_t>(BeaconType::MobileBeacon);
+  packet.status = static_cast<uint8_t>(status);
+  packet.latitudeE7 = static_cast<int32_t>((DEBUG_OWN_POSITION.latitudeDeg + dLat) * 1e7);
+  packet.longitudeE7 = static_cast<int32_t>((DEBUG_OWN_POSITION.longitudeDeg + dLon) * 1e7);
+  packet.altitudeM = 100;
+  packet.satellites = 8;
+  packet.batteryPercent = 70;
+  packet.uptimeSeconds = millis() / 1000;
+  packet.sequenceNumber = static_cast<uint16_t>(millis() / DEBUG_BEACON_UPDATE_MS);
+
+  tracker.handlePacket(packet, -60, 8.0f);
+}
+
+void injectDebugBeacons()
+{
+  const float t = millis() / 1000.0f;
+
+  // Trois balises fictives dont le relèvement tourne lentement et la
+  // distance varie, pour faire bouger l'aiguille du cadran et exercer
+  // toute la plage gauche/centre/droite/dos sans matériel radio réel.
+  injectFakeBeacon(101, 1, BeaconStatus::Active,
+                    fmodf(t * 20.0f, 360.0f), 40.0f + 20.0f * sinf(t * 0.3f));
+  injectFakeBeacon(102, 2, BeaconStatus::Eliminated,
+                    fmodf(t * 20.0f + 130.0f, 360.0f), 90.0f);
+  injectFakeBeacon(103, 1, BeaconStatus::LowBattery,
+                    fmodf(t * 20.0f + 250.0f, 360.0f), 220.0f);
+}
+#endif // DETECTOR_DEBUG_SIMULATION
+
 void updateBatteryPercent()
 {
   const int raw = analogRead(PIN_BATTERY_ADC);
@@ -104,38 +156,49 @@ void handleIncomingLoRaPackets()
 
 void updateCompassHeading()
 {
-  if (!compassReady) {
-    return;
-  }
+  if (compassReady) {
+    const ImuSample sample = compass.read();
 
-  const ImuSample sample = compass.read();
+    if (calibratingCompass) {
+      compass.feedCalibrationSample(sample);
+      if (millis() >= calibrationEndMillis) {
+        compass.finishCalibration();
+        calibratingCompass = false;
+        buzzer.play(BuzzerPattern::TripleBeep);
+      }
+      return;
+    }
 
-  if (calibratingCompass) {
-    compass.feedCalibrationSample(sample);
-    if (millis() >= calibrationEndMillis) {
-      compass.finishCalibration();
-      calibratingCompass = false;
-      buzzer.play(BuzzerPattern::TripleBeep);
+    const float heading = compass.headingDegrees(sample);
+    ownHeadingValid = !isnan(heading);
+    if (ownHeadingValid) {
+      ownHeadingDeg = heading;
     }
     return;
   }
 
-  const float heading = compass.headingDegrees(sample);
-  ownHeadingValid = !isnan(heading);
-  if (ownHeadingValid) {
-    ownHeadingDeg = heading;
-  }
+#if DETECTOR_DEBUG_SIMULATION
+  // Pas de boussole réelle détectée : cap simulé qui balaie lentement les
+  // 360°, uniquement pour pouvoir tester le rendu du cadran sur banc.
+  ownHeadingValid = true;
+  ownHeadingDeg = fmodf(millis() / 60.0f, 360.0f);
+#endif
 }
 
 void updateBeaconGeometry()
 {
   const GpsFix &fix = gps.fix();
-  if (!fix.hasFix) {
+  if (fix.hasFix) {
+    const GeoPoint ownPosition{ fix.latitudeDeg, fix.longitudeDeg };
+    tracker.updateGeometry(ownPosition);
     return;
   }
 
-  const GeoPoint ownPosition{ fix.latitudeDeg, fix.longitudeDeg };
-  tracker.updateGeometry(ownPosition);
+#if DETECTOR_DEBUG_SIMULATION
+  // Pas de fix GPS réel : position simulée pour pouvoir quand même calculer
+  // un relèvement/une distance vers les balises (réelles ou simulées).
+  tracker.updateGeometry(DEBUG_OWN_POSITION);
+#endif
 }
 
 void handleEncoderInput()
@@ -228,6 +291,14 @@ void setup()
 {
   Serial.begin(115200);
 
+#if DETECTOR_DEBUG_SIMULATION
+  Serial.println("################################################");
+  Serial.println("## MODE DEBUG ACTIF : balises simulees en cours");
+  Serial.println("## Repasser DETECTOR_DEBUG_SIMULATION a 0 (config.h)");
+  Serial.println("## avant toute utilisation en jeu reel.");
+  Serial.println("################################################");
+#endif
+
   encoder.begin(PIN_ENC_A, PIN_ENC_B, PIN_ENC_SW);
   buzzer.begin();
 
@@ -266,7 +337,8 @@ void loop()
 
   const uint32_t now = millis();
 
-  if (compassReady && (now - lastImuReadMillis) >= IMU_READ_INTERVAL_MS) {
+  if ((compassReady || DETECTOR_DEBUG_SIMULATION) &&
+      (now - lastImuReadMillis) >= IMU_READ_INTERVAL_MS) {
     lastImuReadMillis = now;
     updateCompassHeading();
   }
@@ -275,6 +347,13 @@ void loop()
     lastGeometryUpdateMillis = now;
     updateBeaconGeometry();
   }
+
+#if DETECTOR_DEBUG_SIMULATION
+  if ((now - lastDebugInjectMillis) >= DEBUG_BEACON_UPDATE_MS) {
+    lastDebugInjectMillis = now;
+    injectDebugBeacons();
+  }
+#endif
 
   if ((now - lastExpiryCheckMillis) >= EXPIRY_CHECK_INTERVAL_MS) {
     lastExpiryCheckMillis = now;
@@ -292,4 +371,12 @@ void loop()
     lastDisplayRefreshMillis = now;
     renderDisplay();
   }
+
+  // loop() ne bloque jamais ailleurs (pas de delay() dans les fonctions
+  // ci-dessus) : sans ce yield, la tâche loopTask (priorité 1) monopolise
+  // le cœur 1 en continu et la tâche idle de ce cœur (priorité 0) n'est
+  // jamais programmée pour réarmer son chien de garde — d'où le
+  // "task_wdt ... IDLE1" observé après quelques secondes. 1 ms suffit
+  // largement compte tenu des intervalles (le plus court est 50 ms).
+  delay(1);
 }
