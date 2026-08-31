@@ -50,6 +50,10 @@ constexpr int FRONT_MAX_ANGLE = 110;
 
 constexpr uint16_t COLOR_BACKGROUND = 0x0841;
 constexpr uint16_t COLOR_TOP        = 0x18E3;
+// En mode simulation, la barre supérieure passe en orange sur tous les
+// écrans : un rappel visuel permanent, impossible à manquer, que les
+// données affichées ne viennent pas d'une vraie balise.
+constexpr uint16_t COLOR_TOP_BAR    = DETECTOR_DEBUG_SIMULATION ? ILI9341_ORANGE : COLOR_TOP;
 constexpr uint16_t COLOR_BOTTOM     = 0x2104;
 constexpr uint16_t COLOR_ZONE_SIDE  = 0x2945;
 constexpr uint16_t COLOR_BORDER     = ILI9341_DARKGREY;
@@ -202,7 +206,7 @@ void Display::begin()
 void Display::drawTopBar(bool gpsHasFix, uint8_t satellites, uint8_t batteryPercent,
                           int activeBeaconCount, const char *screenLabel)
 {
-  _tft.fillRect(0, 0, SCREEN_W, TOP_H, COLOR_TOP);
+  _tft.fillRect(0, 0, SCREEN_W, TOP_H, COLOR_TOP_BAR);
   _tft.drawFastHLine(0, TOP_H - 1, SCREEN_W, COLOR_BORDER);
 
   _tft.setTextWrap(false);
@@ -211,17 +215,17 @@ void Display::drawTopBar(bool gpsHasFix, uint8_t satellites, uint8_t batteryPerc
   char gpsText[16];
   snprintf(gpsText, sizeof(gpsText), "GPS:%s %us",
            gpsHasFix ? "OK" : "--", static_cast<unsigned>(satellites));
-  _tft.setTextColor(gpsHasFix ? ILI9341_GREEN : ILI9341_RED, COLOR_TOP);
+  _tft.setTextColor(gpsHasFix ? ILI9341_GREEN : ILI9341_RED, COLOR_TOP_BAR);
   _tft.setCursor(6, 10);
   _tft.print(gpsText);
 
-  _tft.setTextColor(COLOR_TEXT, COLOR_TOP);
+  _tft.setTextColor(COLOR_TEXT, COLOR_TOP_BAR);
   _tft.setCursor(118, 10);
   _tft.print(screenLabel);
 
   char rightText[20];
   snprintf(rightText, sizeof(rightText), "B:%u%% N:%d", batteryPercent, activeBeaconCount);
-  _tft.setTextColor(COLOR_TEXT, COLOR_TOP);
+  _tft.setTextColor(COLOR_TEXT, COLOR_TOP_BAR);
   _tft.setCursor(232, 10);
   _tft.print(rightText);
 }

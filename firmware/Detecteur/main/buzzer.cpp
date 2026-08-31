@@ -30,7 +30,10 @@ Buzzer::Buzzer(int pin) : _pin(pin) {}
 void Buzzer::begin()
 {
   pinMode(_pin, OUTPUT);
-  noTone(_pin);
+  // Pas de noTone() ici : sur arduino-esp32 3.x, l'appeler avant tout
+  // tone() sur cette broche (donc avant qu'un canal LEDC lui soit
+  // attaché) logue une erreur "Tone is not running on given pin" —
+  // bénigne mais inutile, puisque rien ne joue encore.
 }
 
 void Buzzer::play(BuzzerPattern pattern)
