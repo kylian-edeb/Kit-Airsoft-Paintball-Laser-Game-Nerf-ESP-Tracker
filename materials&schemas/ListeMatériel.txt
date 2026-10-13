@@ -15,7 +15,7 @@ nombre de participants et la taille du terrain.
 ------------------------------------------------------------------
 Electronique :
 - 1x ESP32 (ou ESP32-S3) carte de développement, format compact
-- 1x Module LoRa 433 MHz (ex. SX1278 / RFM95)
+- 1x Module LoRa 433 MHz SX1278
 - 1x Antenne LoRa 433 MHz (fouet ou spirale, adaptée au boîtier)
 - 1x Module de charge/protection batterie LiPo (type TP4056 avec
   protection surcharge/décharge)
@@ -58,9 +58,9 @@ Mécanique :
 ------------------------------------------------------------------
 Electronique :
 - 1x ESP32-S3 (puissance suffisante pour affichage + calculs)
-- 1x Ecran OLED ou TFT (lisibilité en extérieur, faible conso)
+- 1x Ecran TFT ILI9341 (lisibilité en extérieur, faible conso)
 - 1x Module LoRa 433 MHz + antenne
-- 1x Module GNSS/GPS u-blox + antenne active (position du porteur)
+- 1x Module GNSS/GPS u-blox NEO-6M + antenne active (position du porteur)
 - 1x Module de charge/protection batterie LiPo (TP4056 ou équiv.)
 - 1x Batterie LiPo 3.7V, 1500-3000 mAh (autonomie renforcée)
 - 2-3x Boutons de navigation (menu / zoom / mode équipe)

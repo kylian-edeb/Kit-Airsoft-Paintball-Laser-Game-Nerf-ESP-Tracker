@@ -6,9 +6,9 @@ Le **Kit de Détection Tactique** est un projet modulaire basé sur ESP32, conç
 
 Le système repose notamment sur :
 
-- des balises mobiles portées par les joueurs ;
-- des points de positionnement statiques ;
-- un détecteur portable ;
+- des balises mobiles portées par les joueurs ; Balise à Émission Mobile - BEM
+- des points de positionnement statiques ; 03_Balise de Positionnement Statique - BPS
+- un détecteur portable ; Détecteur
 - une communication locale entre modules ESP32 ;
 - des fonctions de géolocalisation et de télémétrie.
 
